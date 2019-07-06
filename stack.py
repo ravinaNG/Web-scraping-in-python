@@ -1,7 +1,34 @@
 def Solve_eq(string1):
-    string2 = string1.strip('  ')
-    return string2
-string = '1 + 2 * 3 ** 4'
+    print ("hello india")
+    return string1.strip(' ')
+string = ' hello india'
+print (Solve_eq(string))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def Solve_eq(string1):
+#     string2 = string1.strip('  ')
+#     return string2
+# string = '1 + 2 * 3 ** 4'
 print (Solve_eq(string))
 # string = string.strip(' ')
 

@@ -1,4 +1,3 @@
-import re
 import requests
 import json
 import html5lib
@@ -7,18 +6,22 @@ movie_link =  "https://www.imdb.com/india/top-rated-indian-movies/"
 data = requests.get(movie_link)
 movies_data = data.content
 soup = BeautifulSoup(movies_data, 'html5lib')
-# print(soup)
 tbody = soup.find('tbody',{'class':'lister-list'})
-# print (tbody)
 for tr in tbody.findAll('tr'):
     td = (tr.find_all("td"))
     # print (td)
     i = 0
+    j = 0
+    demo = []
     while (i<len(td)):
         data = td[i].get_text()
-        meta = re.sub(',', data)
-        print (meta)
+
+        if j == 1 or j == 2:
+                meta = data.split()
+                demo.extend(meta)
+        j +=1
         i = i + 1
+    print(demo)
 # just chacking
 
 
