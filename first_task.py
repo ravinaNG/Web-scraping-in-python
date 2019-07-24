@@ -37,9 +37,10 @@ def scrap_top_list(trs):
         dic['rating'] = rating
         dic['url'] = movie_link
         dic['position'] = td
-        pprint (dic)
+        # pprint (dic)
         movies_data.append(dic) 
         td = td + 1
     return movies_data
 
-pprint (scrap_top_list(trs))
+data_in_formate = (scrap_top_list(trs))
+# pprint (data_in_formate)
