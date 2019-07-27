@@ -5,12 +5,16 @@ import re
 # import html5lib
 movies_link = "https://www.imdb.com/india/top-rated-indian-movies/"
 movies_data = requests.get(movies_link).content
-soup = BeautifulSoup(movies_data, 'html')
+# pprint (movies_data)
+soup = BeautifulSoup(movies_data, 'html5lib')
+# # print ("******************************************************")
+# # print ("")
 # print (soup)
+
 tbody = soup.find('tbody', {'class':'lister-list'})
-# print (tbody)
+# # print (tbody)
 trs = tbody.findAll('tr')
-# print (type(trs)) # 'bs4.element.ResultSet' this is the type of trs but it is same like list.
+# # print (type(trs)) # 'bs4.element.ResultSet' this is the type of trs but it is same like list.
 # print (len(trs))
 def scrap_top_list(trs):
     movies_data = []
