@@ -18,6 +18,14 @@ def movieName(list):
         index = index + 1
     return movie_name
 
+def languagesOfMovie(list):
+    print (list)
+    languages = []
+    for index in list:
+        language = index.get_text()
+        languages.append(language)
+    return language
+
 def scrape_movie_details(movieUrl):
     list1 = []
     detailsss = {}
@@ -38,8 +46,9 @@ def scrape_movie_details(movieUrl):
     text = details.find('div', {'class':'summary_text'}).get_text()
     movie_text = text.strip() # movie text
 
-    urls = soup.find('div', {'class':'slate_wrapper'})
-    image_url = urls.find('div', {'class':'slate'}).a.img['src'] # poster image url
+    image_url = soup.find('div', {'class':'poster'})
+    image_url = image_url.find('img')
+    image_url = image_url.get('src') # poster image url
 
     country_class = soup.find('div', {'class':'article', 'id':'titleDetails'})
     txt_blocks = country_class.findAll('div', {'class':'txt-block'})
@@ -49,9 +58,13 @@ def scrape_movie_details(movieUrl):
         elif 'Language' in name.text:
             lang = name
     country_name = country.a.get_text() # country name
-    language = lang.a.get_text() # language
-    languages = []
-    languages.append(language)
+    lange = lang.findAll('a')
+    # print (lange)
+    # languages = []
+    # language = lang.a.get_text() # language
+    languages = languagesOfMovie(lange)
+    print (languages)
+    # languages.append(language)
 
     runTime = find_name.find('div', {'class':'subtext'}).time.get_text()
     runtime = runTime.strip() # Runtime
@@ -69,9 +82,11 @@ def scrape_movie_details(movieUrl):
     detailsss['bio'] = movie_text
     detailsss['runtime'] = runtime
     detailsss['genre'] = genres
-    pprint(detailsss)
+    # pprint(detailsss)
+    return detailsss
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[0]
+url = urlList[1]
 # print (url)
-scrape_movie_details(url)
+movie_details = scrape_movie_details(url)
+# pprint (movie_details)

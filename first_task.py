@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 # import html5lib
 movies_link = "https://www.imdb.com/india/top-rated-indian-movies/"
-movies_data = requests.get(movies_link).content
+movies_data = requests.get(movies_link).text
+# print (type(movies_data))
 soup = BeautifulSoup(movies_data, 'html5lib')
 tbody = soup.find('tbody', {'class':'lister-list'})
 trs = tbody.findAll('tr')
