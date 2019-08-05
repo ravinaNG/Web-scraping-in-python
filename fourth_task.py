@@ -18,17 +18,19 @@ def movieName(list):
         index = index + 1
     return movie_name
 
-def languagesOfMovie(list):
-    print (list)
+def languagesOfMovie(length, list):
     languages = []
-    for index in list:
-        language = index.get_text()
-        languages.append(language)
-    return language
+    for index in range(1, length):
+        if(list[index] == '|'):
+            pype = list[index]
+            list.remove(pype)
+        languages.append(list[index])
+    return languages
 
 def scrape_movie_details(movieUrl):
     list1 = []
-    detailsss = {}
+    details = {}
+    lang = []
     getData = requests.get(movieUrl).content
     soup = BeautifulSoup(getData, 'html5lib')
     div = soup.find('div', {'class':'titleBar'})
@@ -38,12 +40,19 @@ def scrape_movie_details(movieUrl):
     remove_year = demo.pop()
     movie_name = (movieName(demo)) # movie name
 
-    details = soup.find('div', {'class':'plot_summary'})
-    director = details.a.get_text() 
-    director_name = []
-    director_name.append(director) # Derector name
+    plot_summary = soup.find('div', {'class':'plot_summary'})
+    credit_summary_item = plot_summary.find('div', {'class':'credit_summary_item'})
+    key_value = credit_summary_item.text
+    key_value = key_value.strip()
+    directors = key_value.split()
+    length = len(directors)
+    directors_name = languagesOfMovie(length, directors) # Derectors name
+    # print (directors_name)
+    # director = details.a.get_text() 
+    # director_name = []
+    # director_name.append(director) # Derector name
 
-    text = details.find('div', {'class':'summary_text'}).get_text()
+    text = plot_summary.find('div', {'class':'summary_text'}).get_text()
     movie_text = text.strip() # movie text
 
     image_url = soup.find('div', {'class':'poster'})
@@ -54,17 +63,19 @@ def scrape_movie_details(movieUrl):
     txt_blocks = country_class.findAll('div', {'class':'txt-block'})
     for name in txt_blocks: 
         if 'Country' in name.text:
-            country = name
+            country = name.text 
+            country = country.strip()
+            key_value = country.split()
+            country_name = key_value[1] # country
+
         elif 'Language' in name.text:
-            lang = name
-    country_name = country.a.get_text() # country name
-    lange = lang.findAll('a')
-    # print (lange)
-    # languages = []
-    # language = lang.a.get_text() # language
-    languages = languagesOfMovie(lange)
-    print (languages)
-    # languages.append(language)
+            lang = name.text
+            lang = lang.strip()
+            languages = lang.split()
+            length = len(languages)-1
+
+    languages = languagesOfMovie(length, languages) # language
+    # print (languages)
 
     runTime = find_name.find('div', {'class':'subtext'}).time.get_text()
     runtime = runTime.strip() # Runtime
@@ -74,19 +85,17 @@ def scrape_movie_details(movieUrl):
     genres.append(genre)
 
     # whole details in dictionary formate. :)
-    detailsss['name'] = movie_name
-    detailsss['director'] = director_name
-    detailsss['country'] = country_name
-    detailsss['language'] = languages
-    detailsss['poster_image_url'] = image_url
-    detailsss['bio'] = movie_text
-    detailsss['runtime'] = runtime
-    detailsss['genre'] = genres
-    # pprint(detailsss)
-    return detailsss
+    details['name'] = movie_name
+    details['director'] = directors_name
+    details['country'] = country_name
+    details['language'] = languages
+    details['poster_image_url'] = image_url
+    details['bio'] = movie_text
+    details['runtime'] = runtime
+    details['genre'] = genres
+    return details
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[1]
-# print (url)
+url = urlList[5]
 movie_details = scrape_movie_details(url)
-# pprint (movie_details)
+pprint (movie_details)
