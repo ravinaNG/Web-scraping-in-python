@@ -20,8 +20,8 @@ for index in movie_names:
     num = num + 1
 
 user = int(input("Enter the number from which movie you want details:- "))
-next_10 = user + 10
-for index in range(user, next_10):
+length = len(url_list)
+for index in range(user, length):
     url = url_list[index-1]
     print (index, end = " ")
     details = fourth_task.scrape_movie_details(url)

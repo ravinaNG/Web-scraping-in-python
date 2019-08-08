@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 # import html5lib
 from pprint import pprint 
 import requests
+# pprint (moviesData)
 
 def storeMoviesUrl(movieData):
     urlList = []
@@ -18,13 +19,35 @@ def movieName(list):
         index = index + 1
     return movie_name
 
-def languagesOfMovie(length, list):
+def languagesOfMovie(index, length, split_list):
     languages = []
-    for index in range(1, length):
-        if(list[index] == '|'):
-            pype = list[index]
-            list.remove(pype)
-        languages.append(list[index])
+    if('UA' in split_list):
+        length = len(split_list)-5
+        index = 5
+    if('U' in split_list):
+        length = len(split_list)-5
+        index = 5
+    if('A' in split_list):
+        length = len(split_list)-5
+        index = 5
+    if('Unrated' in split_list):
+        length = len(split_list)-5
+        index = 5
+    while(index<length):
+        if(split_list[index] == '|'):
+            pype = split_list[index]
+            split_list.remove(pype)
+            index = index -1
+            length = len(split_list)
+        else:
+            languages.append(split_list[index])
+        index = index + 1
+    # for element in range(index, length):
+    #     if(split_list[element] == '|'):
+    #         pype = split_list[element]
+    #         split_list.remove(pype)
+    #     else:
+    #         languages.append(split_list[element])
     return languages
 
 def scrape_movie_details(movieUrl):
@@ -45,12 +68,11 @@ def scrape_movie_details(movieUrl):
     key_value = credit_summary_item.text
     key_value = key_value.strip()
     directors = key_value.split()
+    print (key_value)
     length = len(directors)
-    directors_name = languagesOfMovie(length, directors) # Derectors name
+    index = 1
+    directors_name = languagesOfMovie(index, length, directors) # Derectors name
     # print (directors_name)
-    # director = details.a.get_text() 
-    # director_name = []
-    # director_name.append(director) # Derector name
 
     text = plot_summary.find('div', {'class':'summary_text'}).get_text()
     movie_text = text.strip() # movie text
@@ -72,17 +94,34 @@ def scrape_movie_details(movieUrl):
             lang = name.text
             lang = lang.strip()
             languages = lang.split()
-            length = len(languages)-1
-
-    languages = languagesOfMovie(length, languages) # language
-    # print (languages)
+            length = len(languages)
+            index = 1
+    try:
+        languages = languagesOfMovie(index, length, languages) # language
+        # print (languages)
+    except IndexError as error:
+        index = 0
+        length = len(languages)-1
+        languages = languagesOfMovie(index, length, languages) # language
+        # print (languages)
 
     runTime = find_name.find('div', {'class':'subtext'}).time.get_text()
-    runtime = runTime.strip() # Runtime
-
-    genre = find_name.find('div', {'class':'subtext'}).a.get_text() # Genre
-    genres = []
-    genres.append(genre)
+    runtime = runTime.strip()
+    split_list = runtime.split()
+    hour = split_list[0]
+    hour = hour.strip('h')
+    minut = split_list[1]
+    minut = minut.strip('min')
+    total_min = (int(hour)*60) + int(minut) # Runtime
+    subtext = find_name.find('div', {'class':'subtext'}) #.a.get_text() # Genre
+    genre = subtext.text
+    genre = genre.strip()
+    key_value = genre.split()
+    print (key_value)
+    length = len(key_value)-5
+    index = 3
+    genres = languagesOfMovie(index, length, key_value) # Genre
+    # print (genres)
 
     # whole details in dictionary formate. :)
     details['name'] = movie_name
@@ -91,11 +130,11 @@ def scrape_movie_details(movieUrl):
     details['language'] = languages
     details['poster_image_url'] = image_url
     details['bio'] = movie_text
-    details['runtime'] = runtime
+    details['runtime'] = total_min
     details['genre'] = genres
     return details
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[5]
+url = urlList[230]
 movie_details = scrape_movie_details(url)
-pprint (movie_details)
+# pprint (movie_details)
