@@ -68,7 +68,10 @@ def scrape_movie_details(movieUrl):
     key_value = credit_summary_item.text
     key_value = key_value.strip()
     directors = key_value.split()
-    print (key_value)
+    directors.remove('Director:')
+    directorStr = ""
+    directorStr = directorStr.join(directors)
+    print (directorStr)
     length = len(directors)
     index = 1
     directors_name = languagesOfMovie(index, length, directors) # Derectors name
@@ -108,16 +111,21 @@ def scrape_movie_details(movieUrl):
     runTime = find_name.find('div', {'class':'subtext'}).time.get_text()
     runtime = runTime.strip()
     split_list = runtime.split()
+    print (split_list)
     hour = split_list[0]
     hour = hour.strip('h')
-    minut = split_list[1]
-    minut = minut.strip('min')
-    total_min = (int(hour)*60) + int(minut) # Runtime
+    if(len(split_list)==2):
+        minut = split_list[1]
+        minut = minut.strip('min')
+        total_min = (int(hour)*60) + int(minut) # Runtime
+    else:
+        total_min = (int(hour)*60)
     subtext = find_name.find('div', {'class':'subtext'}) #.a.get_text() # Genre
     genre = subtext.text
     genre = genre.strip()
     key_value = genre.split()
-    print (key_value)
+    # print (key_value, end = '')
+    # print ('######################################')
     length = len(key_value)-5
     index = 3
     genres = languagesOfMovie(index, length, key_value) # Genre
