@@ -71,7 +71,7 @@ def scrape_movie_details(movieUrl):
     directors.remove('Director:')
     directorStr = ""
     directorStr = directorStr.join(directors)
-    print (directorStr)
+    # print (directorStr)
     length = len(directors)
     index = 1
     directors_name = languagesOfMovie(index, length, directors) # Derectors name
@@ -97,6 +97,7 @@ def scrape_movie_details(movieUrl):
             lang = name.text
             lang = lang.strip()
             languages = lang.split()
+            print (languages)
             length = len(languages)
             index = 1
     try:
@@ -111,7 +112,7 @@ def scrape_movie_details(movieUrl):
     runTime = find_name.find('div', {'class':'subtext'}).time.get_text()
     runtime = runTime.strip()
     split_list = runtime.split()
-    print (split_list)
+    # print (split_list)
     hour = split_list[0]
     hour = hour.strip('h')
     if(len(split_list)==2):
@@ -143,6 +144,6 @@ def scrape_movie_details(movieUrl):
     return details
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[230]
+url = urlList[2]
 movie_details = scrape_movie_details(url)
-# pprint (movie_details)
+pprint (movie_details)
