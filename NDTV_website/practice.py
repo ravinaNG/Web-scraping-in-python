@@ -3,7 +3,10 @@ from bs4 import BeautifulSoup
 import html5lib
 from pprint import pprint
 ndtv_url = "https://www.ndtv.com/latest?pfrom=home-mainnavgation"
-next_page = "https://www.ndtv.com/latest/page-6"
+next_page = "https://www.ndtv.com/latest/page-"
+page = "1"
+print (next_page+page)
+next_page = next_page.split("-")
 
 def getUrlData(url):
     data = requests.get(url).text
@@ -43,15 +46,24 @@ def getDetailsOfArtical(url):
     except:
         pass
 
-nstory_headers_classes = getUrlData(next_page)
-urls = stor_urls(nstory_headers_classes)
-url = 0
-print (len(urls))
-while (url<len(urls)):
-    print (urls[url])
-    getDetailsOfArtical(urls[url])
+index = 1
+while(index <= 8):
+    page = str(-index)
+    print ("-=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--", end="  ")
+    print (index, end="  ")
+    print("--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=-")
     print (" ")
-    url = url+1
+    next_page = next_page[0]+page
+    nstory_headers_classes = getUrlData(next_page)
+    urls = stor_urls(nstory_headers_classes)
+    url = 0
+    while (url<len(urls)):
+        print (urls[url])
+        getDetailsOfArtical(urls[url])
+        print (" ")
+        url = url+1
+    next_page = next_page.split("-")
+    index = index + 1
 
 # url = "https://gadgets.ndtv.com/wearables/sponsored/how-adidas-pulseboost-hd-will-revolutionize-urban-running-2075824"
 # getDetailsOfArtical(url)

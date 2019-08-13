@@ -2,8 +2,22 @@ import requests
 from bs4 import BeautifulSoup
 import html5lib
 from pprint import pprint
+import json
+from os import path
+
 ndtv_url = "https://www.ndtv.com/latest?pfrom=home-mainnavgation"
-next_page = "https://www.ndtv.com/latest/page-1"
+next_page = "https://www.ndtv.com/latest/page-"
+next_page = next_page.split("-")
+
+def openJsonFile(fileName, data):
+    with open(fileName, 'w') as fileHandle:
+        fileHandle.write(data)
+        return fileHandle
+
+def readJsonFile(fileName):
+    with open(fileName, 'r') as fileHandle:
+        data = fileHandle.read()
+        return data
 
 def getUrlData(url):
     data = requests.get(url).text
@@ -23,69 +37,73 @@ def stor_urls(data):
     return (urls_list)
 
 def getDetailsOfArtical(url):
+    dictionary = {}
     data = requests.get(url).text
     soup = BeautifulSoup(data, 'html5lib')
-    print(soup.title.text)
-    print (" ")
+    title = soup.title.text # title
+    # print (title)
+    # print (" ")
     name_class = soup.find('div', {'class':'ins_lftcont640 clr', 'id':'newsDescriptionContainer'})
     try:   
         ins_dateline = name_class.find('div', {'class':'ins_dateline'})
-        # print (ins_dateline)
-    except:
-        try:
-            mainbody = soup.find('div', {'class':'mainbody'})
-            modArticle = mainbody.find('div', {'class':'mod mod-article', 'id':'print-1'})
-            ndRightDateTop = modArticle.find('div', {'class':'nd-right date-top'})
-            contentWrap = ndRightDateTop.find('div', {'class':'content-wrap'})
-            print (contentWrap.span.text) # Date
-            print (" ")
-
-            articleContent = modArticle.find('div', {'class':'article-content'})
-            articleBody = articleContent.find('div', {'itemprop':'articleBody'})
-            descfirst = articleBody.find('div', {'data-desc-first':'descfirst'})
-            print (descfirst.text) # Paragraph
-
-            descSecond = articleBody.find('div', {'data-desc-second':'descsecond'})
-            ps = descSecond.findAll('p')
-            for p in ps:
-                print (p.text) # Paragraph
-                print (" ")
-        except:
-            articleAuthor = soup.find('div', {'class':'article-author tpStl1'}) # date and Author
-            b = articleAuthor.find('b')
-            author = b.get_text()
-            author = author.strip() # Author
-            print (author)
-
-            span = articleAuthor.find('span')
-            print (span.text)
-
-            article_storybody = soup.find('div', {'class':'article_storybody'})
-            paragraph = article_storybody.get_text()
-            paragraph = paragraph.strip()
-            print (paragraph)
-    try:
         a = ins_dateline.findAll('a')
         name = a[1].find('span', {'itemprop':'name'})
-        print (name.get_text()) # Author
-        print (" ")
+        editedBy = name.get_text() # Author
+        # print (editedBy)
+        # print (" ")
         date = ins_dateline.find('span', itemprop="dateModified")
-        print (date.text) # Date
-        print (" ")
+        newsDate = (date.text) # Date
+        # print (newsDate)
+        # print (" ")
         ins_left_rhs = name_class.find('div', {'class':'ins_left_rhs'})
         articleBody = ins_left_rhs.find('div', {'itemprop':'articleBody'})
-        print (articleBody.text) # Paragraph
+        paragraph = articleBody.text # Paragraph
+        # print (paragraph)
+
+        dictionary['title'] = title
+        dictionary['editedBy'] = editedBy
+        dictionary['Date'] = newsDate
+        dictionary['paragraph'] = paragraph
     except:
+        dictionary['title'] = title
         pass
+    return dictionary
 
+index = 1
+while(index <= 8):
+    json_file = "page" + str(index) + ".json"
+    wholePageDict = {}
+    print (json_file)
+    if (path.exists(json_file)):
+        data = readJsonFile(json_file)
+        print (data)
+        index = index + 1
+        continue
+    else:
+        page = str(-index)
+        # print ("-=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--", end="  ")
+        # print (index, end="  ")
+        # print("--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=-")
+        # print (" ")
+        next_page = next_page[0]+page
+        nstory_headers_classes = getUrlData(next_page)
+        urls = stor_urls(nstory_headers_classes)
+        dictList = []
+        url = 0
+        while (url<len(urls)):
+            # print (urls[url])
+            detailsDict = getDetailsOfArtical(urls[url])
+            dictList.append(detailsDict)
+            # print (" ")
+            url = url+1
+        pageNo = "page"+str(index)
+        wholePageDict[pageNo] = dictList
+    newses = json.dumps(wholePageDict)
+    pprint(newses)
+    wholePagesData = openJsonFile(json_file, newses)
+    print (wholePagesData)
+    next_page = next_page.split("-")
+    index = index + 1
 
-nstory_headers_classes = getUrlData(ndtv_url)
-urls = stor_urls(nstory_headers_classes)
-# url = "https://doctor.ndtv.com/living-healthy/9-healthy-drinks-other-than-water-to-include-in-your-diet-2083565"
+# url = "https://gadgets.ndtv.com/wearables/sponsored/how-adidas-pulseboost-hd-will-revolutionize-urban-running-2075824"
 # getDetailsOfArtical(url)
-url = 0
-while (url<len(urls)):
-    print (urls[url])
-    getDetailsOfArtical(urls[url])
-    print (" ")
-    url = url+1
