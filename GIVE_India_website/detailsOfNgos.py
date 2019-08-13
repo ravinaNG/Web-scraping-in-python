@@ -61,3 +61,4 @@ def DetailsOfNgo(url):
 
 details = DetailsOfNgo(give_india_url)
 pprint (details)
+

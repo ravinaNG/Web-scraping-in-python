@@ -1,9 +1,7 @@
 from first_task import data_in_formate as moviesData
 from bs4 import BeautifulSoup
-# import html5lib
 from pprint import pprint 
 import requests
-# pprint (moviesData)
 
 def storeMoviesUrl(movieData):
     urlList = []
@@ -42,12 +40,6 @@ def languagesOfMovie(index, length, split_list):
         else:
             languages.append(split_list[index])
         index = index + 1
-    # for element in range(index, length):
-    #     if(split_list[element] == '|'):
-    #         pype = split_list[element]
-    #         split_list.remove(pype)
-    #     else:
-    #         languages.append(split_list[element])
     return languages
 
 def scrape_movie_details(movieUrl):
@@ -67,15 +59,9 @@ def scrape_movie_details(movieUrl):
     credit_summary_item = plot_summary.find('div', {'class':'credit_summary_item'})
     key_value = credit_summary_item.text
     key_value = key_value.strip()
-    directors = key_value.split()
-    directors.remove('Director:')
-    directorStr = ""
-    directorStr = directorStr.join(directors)
-    # print (directorStr)
-    length = len(directors)
-    index = 1
-    directors_name = languagesOfMovie(index, length, directors) # Derectors name
-    # print (directors_name)
+    directors = key_value.split(":")
+    director = directors[1].strip("\n")
+    directors = director.split(",") # Derectors name
 
     text = plot_summary.find('div', {'class':'summary_text'}).get_text()
     movie_text = text.strip() # movie text
@@ -97,22 +83,18 @@ def scrape_movie_details(movieUrl):
             lang = name.text
             lang = lang.strip()
             languages = lang.split()
-            print (languages)
             length = len(languages)
             index = 1
     try:
         languages = languagesOfMovie(index, length, languages) # language
-        # print (languages)
     except IndexError as error:
         index = 0
         length = len(languages)-1
         languages = languagesOfMovie(index, length, languages) # language
-        # print (languages)
 
     runTime = find_name.find('div', {'class':'subtext'}).time.get_text()
     runtime = runTime.strip()
     split_list = runtime.split()
-    # print (split_list)
     hour = split_list[0]
     hour = hour.strip('h')
     if(len(split_list)==2):
@@ -125,16 +107,13 @@ def scrape_movie_details(movieUrl):
     genre = subtext.text
     genre = genre.strip()
     key_value = genre.split()
-    # print (key_value, end = '')
-    # print ('######################################')
     length = len(key_value)-5
     index = 3
     genres = languagesOfMovie(index, length, key_value) # Genre
-    # print (genres)
 
     # whole details in dictionary formate. :)
     details['name'] = movie_name
-    details['director'] = directors_name
+    details['director'] = directors
     details['country'] = country_name
     details['language'] = languages
     details['poster_image_url'] = image_url
@@ -144,6 +123,6 @@ def scrape_movie_details(movieUrl):
     return details
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[2]
+url = urlList[0]
 movie_details = scrape_movie_details(url)
 pprint (movie_details)
