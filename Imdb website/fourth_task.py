@@ -125,4 +125,4 @@ def scrape_movie_details(movieUrl):
 urlList = storeMoviesUrl(moviesData)
 url = urlList[0]
 movie_details = scrape_movie_details(url)
-pprint (movie_details)
+# pprint (movie_details)
