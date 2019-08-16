@@ -11,15 +11,15 @@ def get_movie_list_details(ListOfUrl):
     length = len(ListOfUrl)
     for index in range(user, length):
         url = ListOfUrl[index-1]
-        print (index, end = " ")
+        # print (index, end = " ")
         details = fourth_task.scrape_movie_details(url)
-        second = random.randint(6, 9)
-        pprint (details)
-        print (" ")
-        print ("************ Next ***********")
-        print (" ")
-        print (second)
-        time.sleep(second)
+        # second = random.randint(1, 3)
+        # pprint (details)
+        # print (" ")
+        # print ("************ Next ***********")
+        # print (" ")
+        # print (second)
+        # time.sleep(second)
         wholeMoviesList.append(details)
     return wholeMoviesList
 
