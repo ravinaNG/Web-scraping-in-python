@@ -2,19 +2,24 @@ from first_task import data_in_formate as moviesData
 from fourth_task import urlList as url_list
 import fourth_task
 from pprint import pprint
+import random
+import time
 
 def get_movie_list_details(ListOfUrl):
     wholeMoviesList = []
     user = 0
-    length = len(url_list)
+    length = len(ListOfUrl)
     for index in range(user, length):
-        url = url_list[index-1]
-        # print (index, end = " ")
+        url = ListOfUrl[index-1]
+        print (index, end = " ")
         details = fourth_task.scrape_movie_details(url)
-        # pprint (details)
-        # print (" ")
-        # print ("************ Next ***********")
-        # print (" ")
+        second = random.randint(6, 9)
+        pprint (details)
+        print (" ")
+        print ("************ Next ***********")
+        print (" ")
+        print (second)
+        time.sleep(second)
         wholeMoviesList.append(details)
     return wholeMoviesList
 
@@ -38,19 +43,19 @@ moviesDetailsList = get_movie_list_details(url_list)
 # pprint (countMovie)
 
 # task 7
-def analyse_movies_director(movieList):
-    directorsMovie = {}
-    for index in movieList:
-        directorsList = index['director']
-        for director in directorsList:
-            if(director not in directorsMovie):
-                directorsMovie[director] = 1
-            else:
-                directorsMovie[director] = directorsMovie[director] + 1
-    return (directorsMovie)
+# def analyse_movies_director(movieList):
+#     directorsMovie = {}
+#     for index in movieList:
+#         directorsList = index['director']
+#         for director in directorsList:
+#             if(director not in directorsMovie):
+#                 directorsMovie[director] = 1
+#             else:
+#                 directorsMovie[director] = directorsMovie[director] + 1
+#     return (directorsMovie)
 
-countMovie = analyse_movies_director(moviesDetailsList)
-pprint (countMovie)
+# countMovie = analyse_movies_director(moviesDetailsList)
+# pprint (countMovie)
 
 
 
