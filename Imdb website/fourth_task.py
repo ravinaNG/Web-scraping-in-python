@@ -31,6 +31,15 @@ def languagesOfMovie(index, length, split_list):
     if('Unrated' in split_list):
         length = len(split_list)-5
         index = 5
+    if('Not' in split_list):
+        length = len(split_list)-5
+        index = 6
+    if('PG' in split_list):
+        length = len(split_list)-5
+        index = 5
+    if('R' in split_list):
+        length = len(split_list)-5
+        index = 5
     while(index<length):
         if(split_list[index] == '|'):
             pype = split_list[index]
@@ -105,11 +114,14 @@ def scrape_movie_details(movieUrl):
         total_min = (int(hour)*60)
     subtext = find_name.find('div', {'class':'subtext'}) #.a.get_text() # Genre
     genre = subtext.text
-    genre = genre.strip()
+    gen = genre.strip()
+    # print (gen)
     key_value = genre.split()
+    # print (key_value)
     length = len(key_value)-5
     index = 3
     genres = languagesOfMovie(index, length, key_value) # Genre
+    # print (genres)
 
     # whole details in dictionary formate. :)
     details['name'] = movie_name
@@ -123,6 +135,6 @@ def scrape_movie_details(movieUrl):
     return details
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[0]
+url = urlList[169]
 movie_details = scrape_movie_details(url)
 # pprint (movie_details)

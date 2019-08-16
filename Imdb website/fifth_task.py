@@ -5,6 +5,7 @@ from pprint import pprint
 import random
 import time
 
+# Task 5 
 def get_movie_list_details(ListOfUrl):
     wholeMoviesList = []
     user = 0
@@ -57,6 +58,19 @@ moviesDetailsList = get_movie_list_details(url_list)
 # countMovie = analyse_movies_director(moviesDetailsList)
 # pprint (countMovie)
 
+# Task 11
+def analyse_movies_genre(movieList):
+    genreOfMovies = {}
+    for index in movieList:
+        genreList = index['genre']
+        for genre in genreList:
+            if(genre not in genreOfMovies):
+                genreOfMovies[genre] = 1
+            else:
+                genreOfMovies[genre] = genreOfMovies[genre] + 1
+    return (genreOfMovies)
+countGenreOfMovies = analyse_movies_genre(moviesDetailsList)
+pprint (countGenreOfMovies)
 
 
 # def getWholeLanguages(movieList):
