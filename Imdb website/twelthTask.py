@@ -76,4 +76,4 @@ def scrape_movie_cast(url):
 #     print (oddTrs)
 movieUrl = moviesUrl[30]
 castAndId = scrape_movie_cast(movieUrl)
-pprint (castAndId)
+# pprint (castAndId)
