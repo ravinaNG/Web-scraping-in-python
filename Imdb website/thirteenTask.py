@@ -3,8 +3,12 @@ import twelthTask
 from fourth_task import urlList as moviesUrl
 from pprint import pprint
 
+def movieDetailsWithCast(url):
+    movieDetails = fourth_task.scrape_movie_details(url)
+    cast = twelthTask.scrape_movie_cast(url)
+    movieDetails["cast"] = cast
+    return movieDetails
+
 movieUrl = moviesUrl[22]
-movieDetails = fourth_task.scrape_movie_details(movieUrl)
-cast = twelthTask.scrape_movie_cast(movieUrl)
-movieDetails["cast"] = cast
-pprint (movieDetails)
+detailsWithCast = movieDetailsWithCast(movieUrl)
+pprint (detailsWithCast)

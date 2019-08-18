@@ -22,11 +22,11 @@ def scrape_movie_cast(url):
     fileName = id+"_cast.json"
 #     print (fileName)
     if (path.exists(fileName)):
-        print ("-===----===---===---===- reading -===---===---===---===---===-")
+        # print ("-===----===---===---===- reading -===---===---===---===---===-")
         castAndId = readJsonFile(fileName) # reading json file
         return castAndId
     else:
-        print ("-===---===---===---===---===--- writing ---===---===---===---===---")
+        # print ("-===---===---===---===---===--- writing ---===---===---===---===---")
         res = requests.get(url).content
         soup = BeautifulSoup(res, 'html5lib')
         subnav = soup.find('div', {'id':'quicklinksBar', 'class':'subnav'})
