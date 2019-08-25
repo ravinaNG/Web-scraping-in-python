@@ -47,9 +47,10 @@ def scrape_movie_cast(url):
 
         listOfIdsAndCast = []
         #     print ("********************* odd ******************************")
-        for oddTr in oddTrs:
+        for oddTr in range(0,len(oddTrs)):
+                evenTr = oddTr
                 dictOfCastAndId = {}
-                td = oddTr.findAll('td')
+                td = oddTrs[oddTr].findAll('td')
                 castLink = td[1].a['href']
                 split = castLink.split('/')
                 cast_id = split[2]
@@ -59,21 +60,22 @@ def scrape_movie_cast(url):
                 dictOfCastAndId['Name'] = name
                 listOfIdsAndCast.append(dictOfCastAndId)
         #     print("*********************** even ******************************")
-        for evenTr in evenTrs:
-                dictOfCastAndId = {} 
-                td = evenTr.findAll('td') 
-                castLink = td[1].a['href']
-                split = castLink.split('/')
-                cast_id = split[2]
-                name = td[1].a.get_text()
-                dictOfCastAndId["imdb_id"] = cast_id
-                dictOfCastAndId['Name'] = name
-                listOfIdsAndCast.append(dictOfCastAndId)
+        # for evenTr in evenTrs:
+                if(evenTr < len(evenTrs)):
+                        dictOfCastAndId = {} 
+                        td = evenTrs[evenTr].findAll('td') 
+                        castLink = td[1].a['href']
+                        split = castLink.split('/')
+                        cast_id = split[2]
+                        name = td[1].a.get_text()
+                        dictOfCastAndId["imdb_id"] = cast_id
+                        dictOfCastAndId['Name'] = name
+                        listOfIdsAndCast.append(dictOfCastAndId)
         
         openJsonFile(fileName, listOfIdsAndCast) #opening and writing in json file
         return listOfIdsAndCast
 
 #     print (oddTrs)
-movieUrl = moviesUrl[30]
+movieUrl = moviesUrl[249]
 castAndId = scrape_movie_cast(movieUrl)
 # pprint (castAndId)

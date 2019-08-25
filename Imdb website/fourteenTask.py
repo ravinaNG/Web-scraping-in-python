@@ -5,18 +5,18 @@ from pprint import pprint
 
 def analyse_co_actors(updatedMoviesDetails):
     coActors = {}
-    for movieDetails in updatedMoviesDetails:
+    for movieDetails in updatedMoviesDetails[:5]:
         print ('Ravina')
         cast = movieDetails['cast']
         for actor in cast[:5]:
             print ('Ravina')
             id = actor['imdb_id']
             name = actor['Name']
-            for movie in updatedMoviesDetails:
+            for movie in updatedMoviesDetails[:5]:
                 print ('Ravina')
                 castList = movie['cast']
                 cast = 0
-                while (cast < len(castList)):
+                while (cast < 5):
                 # for cast in castList:
                     if (id == castList[cast]['imdb_id']):
                         if (id not in coActors):

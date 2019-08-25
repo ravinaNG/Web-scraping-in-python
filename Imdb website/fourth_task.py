@@ -52,9 +52,11 @@ def languagesOfMovie(index, length, split_list):
     return languages
 
 def scrape_movie_details(movieUrl):
+    # Declaration
     list1 = []
     details = {}
     lang = []
+
     getData = requests.get(movieUrl).content
     soup = BeautifulSoup(getData, 'html5lib')
     div = soup.find('div', {'class':'titleBar'})
@@ -62,7 +64,7 @@ def scrape_movie_details(movieUrl):
     name_year = find_name.h1.get_text()
     demo = name_year.split()
     remove_year = demo.pop()
-    movie_name = (movieName(demo)) # movie name
+    movie_name = movieName(demo) # movie name
 
     plot_summary = soup.find('div', {'class':'plot_summary'})
     credit_summary_item = plot_summary.find('div', {'class':'credit_summary_item'})
@@ -112,6 +114,7 @@ def scrape_movie_details(movieUrl):
         total_min = (int(hour)*60) + int(minut) # Runtime
     else:
         total_min = (int(hour)*60)
+
     subtext = find_name.find('div', {'class':'subtext'}) #.a.get_text() # Genre
     genre = subtext.text
     gen = genre.strip()
@@ -135,6 +138,6 @@ def scrape_movie_details(movieUrl):
     return details
 
 urlList = storeMoviesUrl(moviesData)
-url = urlList[169]
+url = urlList[1]
 movie_details = scrape_movie_details(url)
 # pprint (movie_details)

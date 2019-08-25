@@ -24,13 +24,15 @@ def miniYear(yearList):
 def group_by_decade(data, maxYear, miniYear):
     dicade_dict = {}
     lastDigitOfYear = miniYear%10
-    maximumYear = miniYear - lastDigitOfYear - 1
+    miniYear = miniYear - lastDigitOfYear
+    maximumYear = miniYear -1
     for miniYear in range(maxYear):
         if(maximumYear >= maxYear):
             return dicade_dict
         dict_list = []
         minimumYear = maximumYear + 1
         maximumYear = minimumYear + 9
+        miniYear = maximumYear
         for year in movie_data:
             if(year['year']< maximumYear and year['year'] >= minimumYear):
                 dict_list.append(year)
