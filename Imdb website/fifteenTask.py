@@ -30,12 +30,13 @@ def analyse_actors(moviesDetails):
 
 fileName = "analyse_actors.json"
 if(path.exists(fileName)):
-    # print ("---===---===---===---===---===-- rading --===---===---===---===---===")
+    print ("---===---===---===---===---===-- rading --===---===---===---===---===")
     data = readJsonFile(fileName)
-    # pprint (data)
+    pprint (data)
 else:
-    # print ("---===---===---===---===--- writing ---===---===---===---===---===---=")
+    print ("---===---===---===---===--- writing ---===---===---===---===---===---=")
     moviesDetails = wholeMovieDetailswithCast(moviesUrl, movieDetailsWithCast)
     actors = analyse_actors(moviesDetails)
     openJsonFile(fileName, actors)
-    # pprint (actors)
+    pprint (actors)
+    

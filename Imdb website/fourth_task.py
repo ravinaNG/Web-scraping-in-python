@@ -118,13 +118,10 @@ def scrape_movie_details(movieUrl):
     subtext = find_name.find('div', {'class':'subtext'}) #.a.get_text() # Genre
     genre = subtext.text
     gen = genre.strip()
-    # print (gen)
     key_value = genre.split()
-    # print (key_value)
     length = len(key_value)-5
     index = 3
     genres = languagesOfMovie(index, length, key_value) # Genre
-    # print (genres)
 
     # whole details in dictionary formate. :)
     details['name'] = movie_name

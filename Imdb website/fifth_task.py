@@ -9,9 +9,9 @@ import time
 def get_movie_list_details(ListOfUrl):
     wholeMoviesList = []
     user = 0
-    length = len(ListOfUrl)
+    length = 10 #len(ListOfUrl)
     for index in range(user, length):
-        url = ListOfUrl[index-1]
+        url = ListOfUrl[index ]
         # print (index, end = " ")
         details = fourth_task.scrape_movie_details(url)
         # second = random.randint(1, 3)
@@ -59,18 +59,18 @@ moviesDetailsList = get_movie_list_details(url_list)
 # pprint (countMovie)
 
 # Task 11
-def analyse_movies_genre(movieList):
-    genreOfMovies = {}
-    for index in movieList:
-        genreList = index['genre']
-        for genre in genreList:
-            if(genre not in genreOfMovies):
-                genreOfMovies[genre] = 1
-            else:
-                genreOfMovies[genre] = genreOfMovies[genre] + 1
-    return (genreOfMovies)
-countGenreOfMovies = analyse_movies_genre(moviesDetailsList)
-pprint (countGenreOfMovies)
+# def analyse_movies_genre(movieList):
+#     genreOfMovies = {}
+#     for index in movieList:
+#         genreList = index['genre']
+#         for genre in genreList:
+#             if(genre not in genreOfMovies):
+#                 genreOfMovies[genre] = 1
+#             else:
+#                 genreOfMovies[genre] = genreOfMovies[genre] + 1
+#     return (genreOfMovies)
+# countGenreOfMovies = analyse_movies_genre(moviesDetailsList)
+# pprint (countGenreOfMovies)
 
 
 # def getWholeLanguages(movieList):
