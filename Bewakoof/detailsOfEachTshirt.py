@@ -5,7 +5,6 @@ from pprint import pprint
 def scrapeDetailsOfTshirts(data):
     detailsList = []
     productGrid = data.find('div', {'class':'productGrid'})
-
     for oneTshirt in productGrid:
         detailsOfOne = {}
         if "0" in oneTshirt.text:
